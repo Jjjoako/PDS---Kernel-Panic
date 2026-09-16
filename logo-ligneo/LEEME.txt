@@ -1,0 +1,31 @@
+LÍGNEO CARPINTERÍA — logo 1A (cola de milano)
+
+Archivos
+  ligneo-simbolo.svg              símbolo solo, fondo claro
+  ligneo-simbolo-inverso.svg      símbolo solo, fondo oscuro
+  ligneo-simbolo-monocromo.svg    una sola tinta (facturas, sellos, fax)
+  ligneo-favicon.svg              versión simplificada, 2 piezas, para 16-32 px
+  ligneo-horizontal.svg           símbolo + nombre en línea (cabecera web)
+  ligneo-horizontal-inverso.svg
+  ligneo-vertical.svg             símbolo centrado + nombre + eslogan
+  ligneo-vertical-inverso.svg
+
+Colores
+  #18202F  tinta principal
+  #68748A  gris azulado (pieza intermedia, descriptores)
+  #DCE1E6  gris claro (bordes, favicon)
+  #FAF7F2  crema (fondo / versión inversa)
+  #B8734F  cobre (espiga del ensamble, acentos)
+
+Tipografía
+  Spectral 600 — nombre
+  Archivo 500 — descriptores
+
+En Figma
+  1. Arrastra los .svg al lienzo: entran como vectores editables.
+  2. Los lockups llevan el nombre como TEXTO. Instala Spectral y Archivo
+     (gratis en Google Fonts) antes de importar, o usa el símbolo solo y
+     escribe el nombre con tus propios estilos de texto.
+  3. Espacio de respeto: el ancho de la pieza izquierda del símbolo
+     (aprox. 40% de su altura) por cada lado.
+  4. Tamaño mínimo del símbolo completo: 24 px. Por debajo, usa el favicon.
