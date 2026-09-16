@@ -6,7 +6,6 @@ Repositorio compartido para el TP de PDS.
 
 - **`logo-ligneo/`** — Logos creados para la web.
 - **`Página-Web/`** — Código de la web.
-- **`Figma/`** — Etapas de diseño en Figma.
 
 ## Cómo trabajar en este repo
 
