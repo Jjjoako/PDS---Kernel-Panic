@@ -3,9 +3,13 @@
    Mostrar/ocultar contraseña, validación del formulario y envío.
    ========================================================================== */
 
+// Todo el archivo va dentro de una IIFE para no filtrar variables/funciones
+// al ámbito global de la página (evita choques con otros scripts).
 (function () {
     "use strict";
 
+    // Referencias a los elementos del DOM que usa este script (ver login.html).
+    // Si login.html cambiara algún id, solo hay que tocar estas líneas.
     const form = document.getElementById("login-form");
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
@@ -18,9 +22,13 @@
 
     /* ----------------------------------------------------------------
        Mostrar / ocultar contraseña
+       Cambia el type del input entre "password" y "text" y alterna la
+       clase "is-visible" del botón, que es lo que decide en login.css
+       qué icono (ojo abierto / ojo tachado) se muestra.
        ---------------------------------------------------------------- */
     if (togglePasswordBtn && passwordInput) {
         togglePasswordBtn.addEventListener("click", function () {
+            // Si ahora mismo está en modo "password", este clic la va a mostrar
             const willShowPassword = passwordInput.type === "password";
 
             passwordInput.type = willShowPassword ? "text" : "password";
@@ -35,12 +43,19 @@
 
     /* ----------------------------------------------------------------
        Validación
+       Como el <form> lleva "novalidate" (ver login.html), estas
+       funciones sustituyen la validación nativa del navegador para
+       controlar nosotros el texto y el estilo de los errores.
        ---------------------------------------------------------------- */
+
+    // Escribe (o limpia, si message es "") el error de un campo concreto
     function setFieldError(inputEl, errorEl, message) {
         errorEl.textContent = message;
         inputEl.setAttribute("aria-invalid", message ? "true" : "false");
     }
 
+    // Devuelve true/false según si el usuario/email es válido, y de paso
+    // actualiza el mensaje de error bajo el campo
     function validateUsername() {
         const value = usernameInput.value.trim();
         if (!value) {
@@ -51,6 +66,7 @@
         return true;
     }
 
+    // Igual que validateUsername pero para la contraseña (obligatoria y >= 6 caracteres)
     function validatePassword() {
         const value = passwordInput.value;
         if (!value) {
@@ -65,6 +81,7 @@
         return true;
     }
 
+    // Valida cada campo también al salir de él (blur), no solo al enviar el formulario
     if (usernameInput) {
         usernameInput.addEventListener("blur", validateUsername);
     }
@@ -72,6 +89,8 @@
         passwordInput.addEventListener("blur", validatePassword);
     }
 
+    // Muestra un mensaje general encima del botón "Acceder" (éxito o error).
+    // type: "success" | "error" | null (null solo limpia el estilo, sin texto)
     function showFormMessage(text, type) {
         formMessage.textContent = text;
         formMessage.classList.remove("is-success", "is-error");
@@ -85,7 +104,7 @@
        ---------------------------------------------------------------- */
     if (form) {
         form.addEventListener("submit", function (event) {
-            event.preventDefault();
+            event.preventDefault(); // evita la recarga de página por defecto del <form>
 
             const isUsernameValid = validateUsername();
             const isPasswordValid = validatePassword();
@@ -102,6 +121,7 @@
                 password: passwordInput.value,
             };
 
+            // Feedback visual de "cargando" mientras se resuelve authenticate()
             if (submitBtn) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = "Accediendo…";
@@ -118,6 +138,7 @@
                     showFormMessage(error.message || "No se ha podido iniciar sesión.", "error");
                 })
                 .finally(function () {
+                    // Se ejecute lo que se ejecute arriba, el botón debe volver a su estado normal
                     if (submitBtn) {
                         submitBtn.disabled = false;
                         submitBtn.textContent = "Acceder";
@@ -129,6 +150,7 @@
     /**
      * Placeholder de autenticación. Sustituir por la integración real
      * (API propia, Firebase Auth, etc.) cuando el backend esté disponible.
+     * De momento solo simula una espera de red y siempre "acierta".
      * @param {{username: string, password: string}} credentials
      * @returns {Promise<void>}
      */

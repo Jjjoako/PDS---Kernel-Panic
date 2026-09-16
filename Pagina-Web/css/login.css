@@ -1,9 +1,17 @@
 /* ==========================================================================
    Lígneo Carpintería — Login
    Paleta e identidad: ver ../logo-ligneo/LEEME.txt
+
+   Estructura del archivo:
+   1. Variables y reset
+   2. Layout general mobile-first (referencia: iPhone)
+   3. Formulario (campos, botones, divisor, enlaces)
+   4. Tablet / escritorio: panel hero a la izquierda (referencia: iPad)
+   5. Escritorio amplio: mismo layout con más aire (referencia: MacBook)
    ========================================================================== */
 
 :root {
+    /* Colores de marca (ver LEEME.txt) */
     --color-ink: #18202f;       /* tinta principal / fondo oscuro */
     --color-ink-soft: #1f2940;
     --color-slate: #68748a;     /* gris azulado */
@@ -12,6 +20,7 @@
     --color-copper: #b8734f;    /* cobre / acento */
     --color-copper-light: #c98a68;
 
+    /* Tipografías de marca (cargadas desde Google Fonts en login.html) */
     --font-serif: "Spectral", "Georgia", serif;
     --font-sans: "Archivo", "Segoe UI", sans-serif;
 
@@ -19,6 +28,7 @@
     --radius-lg: 16px;
 }
 
+/* Reset básico: el padding/border no aumentan el ancho declarado de nada */
 * {
     box-sizing: border-box;
 }
@@ -43,12 +53,14 @@ img {
 
 /* ==========================================================================
    Layout general — mobile first (diseño de referencia: iPhone)
+   Por defecto (sin media query) solo existe una columna: el panel de
+   formulario. El panel hero se activa más abajo a partir de 768px.
    ========================================================================== */
 
 .login-page {
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* en escritorio/tablet pasa a "row", ver media query */
 }
 
 /* Panel hero (imagen de marca) — oculto en móvil */
@@ -60,17 +72,19 @@ img {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* centra login-form-wrap horizontalmente */
     background: var(--color-ink);
     padding: 32px 24px 40px;
 }
 
+/* Columna central que agrupa el logo (móvil) y el <form>; su max-width
+   evita que los campos se vean demasiado anchos en pantallas grandes */
 .login-form-wrap {
     width: 100%;
     max-width: 360px;
 }
 
-/* Logo horizontal — solo en móvil, sustituido por el hero en pantallas grandes */
+/* Logo horizontal — solo en móvil, sustituido por el logo del hero en pantallas grandes */
 .login-brand-mobile {
     display: flex;
     justify-content: center;
@@ -78,9 +92,21 @@ img {
 }
 
 .login-brand-mobile__logo {
+    /* El archivo ligneo-horizontal-inverso.svg declara un viewBox de
+       400x80, pero el dibujo real (símbolo + texto) solo ocupa los
+       primeros ~230px de ancho: el resto es margen vacío a la derecha
+       incluido en el propio SVG. Si se centra el <img> completo, el
+       logotipo visible queda descentrado hacia la izquierda. Lo
+       recortamos aquí con background-size/position para centrar de
+       verdad el dibujo, no el lienzo vacío que lo rodea.
+       (viewBox 400x80 · dibujo real x:2-232 y:10-70) */
+    width: 197px;
     height: 68px;
-    width: auto;
     margin: 0 auto;
+    background-image: url("../../logo-ligneo/ligneo-horizontal-inverso.svg");
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 340px 68px;
 }
 
 /* ==========================================================================
@@ -92,6 +118,7 @@ img {
     flex-direction: column;
 }
 
+/* Bloque label + input (+ mensaje de error) */
 .form-field {
     margin-bottom: 22px;
 }
@@ -110,7 +137,7 @@ img {
     padding: 12px 14px;
     border-radius: var(--radius-md);
     border: 1px solid transparent;
-    background: rgba(104, 116, 138, 0.55);
+    background: rgba(104, 116, 138, 0.55); /* --color-slate con transparencia */
     color: var(--color-cream);
     font-family: var(--font-sans);
     font-size: 0.95rem;
@@ -127,18 +154,23 @@ img {
     background: rgba(104, 116, 138, 0.7);
 }
 
+/* Borde rojizo cuando el navegador considera el valor inválido
+   (p.ej. tras enviar el formulario con un campo vacío) */
 .form-field input:user-invalid {
     border-color: #c96a5a;
 }
 
+/* Envoltorio del input de contraseña, necesario para poder posicionar
+   el botón de mostrar/ocultar contraseña en su interior */
 .password-field {
     position: relative;
 }
 
 .password-field input {
-    padding-right: 44px;
+    padding-right: 44px; /* deja hueco para que el icono no tape el texto escrito */
 }
 
+/* Botón de mostrar/ocultar contraseña, centrado verticalmente dentro del input */
 .toggle-password {
     position: absolute;
     top: 50%;
@@ -165,8 +197,9 @@ img {
     height: 20px;
 }
 
-/* Solo un icono visible a la vez: el ojo tachado se muestra
-   únicamente cuando el botón tiene la clase "is-visible" */
+/* Solo un icono visible a la vez: por defecto se ve el ojo abierto
+   (contraseña oculta); login.js añade la clase "is-visible" al botón
+   cuando el usuario revela la contraseña, lo que intercambia los iconos. */
 .toggle-password .icon-eye-off {
     display: none;
 }
@@ -179,6 +212,7 @@ img {
     display: block;
 }
 
+/* Mensaje de error bajo un campo concreto (usuario o contraseña) */
 .form-error {
     margin: 6px 2px 0;
     font-size: 0.78rem;
@@ -186,10 +220,12 @@ img {
     min-height: 1em;
 }
 
+/* Si login.js no ha escrito ningún mensaje, el párrafo no ocupa espacio visual */
 .form-error:empty {
     display: none;
 }
 
+/* Mensaje general del envío del formulario (éxito o error de login) */
 .form-message {
     margin: -6px 0 16px;
     font-size: 0.85rem;
@@ -222,12 +258,12 @@ img {
     text-decoration: underline;
 }
 
-/* Botones */
+/* Botones (Acceder / Continuar con Google comparten esta base) */
 .btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 10px; /* separación entre icono y texto, si lo hay */
     width: 100%;
     padding: 13px 16px;
     border-radius: var(--radius-md);
@@ -240,7 +276,7 @@ img {
 }
 
 .btn:active {
-    transform: translateY(1px);
+    transform: translateY(1px); /* pequeño feedback de "pulsado" */
 }
 
 .btn-primary {
@@ -253,6 +289,7 @@ img {
     filter: brightness(1.08);
 }
 
+/* Estado mientras login.js procesa el envío (botón deshabilitado) */
 .btn-primary:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -270,10 +307,11 @@ img {
 .icon-google {
     width: 18px;
     height: 18px;
-    flex-shrink: 0;
+    flex-shrink: 0; /* que el texto del botón nunca lo comprima */
 }
 
-/* Divider con círculo central */
+/* Divisor "o" entre el login normal y el de Google: dos líneas con un
+   pequeño círculo hueco en el centro (sin texto, según el diseño original) */
 .divider {
     display: flex;
     align-items: center;
@@ -282,7 +320,7 @@ img {
 }
 
 .divider span {
-    flex: 1;
+    flex: 1; /* las dos líneas reparten el espacio disponible a partes iguales */
     height: 1px;
     background: rgba(220, 225, 230, 0.35);
 }
@@ -314,6 +352,8 @@ img {
 
 /* ==========================================================================
    Tablet / escritorio (diseño de referencia: iPad y MacBook) — split screen
+   A partir de aquí el login pasa de una columna a dos: el panel hero
+   (marca) aparece a la izquierda y el formulario queda a la derecha.
    ========================================================================== */
 
 @media (min-width: 768px) {
@@ -328,17 +368,21 @@ img {
 
     .login-hero {
         display: flex;
-        position: relative;
+        position: relative; /* referencia para la "ola" y el z-index del contenido */
         flex-direction: column;
-        justify-content: flex-start;
-        overflow: hidden;
+        justify-content: flex-start; /* el logo queda arriba del panel */
+        overflow: hidden; /* recorta la "ola" (::before) que sobresale del panel */
         flex: 0 0 44%;
         min-height: 100%;
         padding: 40px;
+        /* Degradado cálido crema -> cobre -> marrón que simula el fondo
+           de madera/textura del diseño original, sin depender de una imagen */
         background:
             radial-gradient(120% 90% at 15% 10%, var(--color-cream) 0%, #e7c9a6 38%, var(--color-copper) 72%, #6e4a35 100%);
     }
 
+    /* Capa que oscurece progresivamente la esquina inferior izquierda del
+       degradado, dando la sensación de una "ola" oscura entrando en el panel */
     .login-hero__wave {
         position: absolute;
         inset: 0;
@@ -348,6 +392,8 @@ img {
         mix-blend-mode: multiply;
     }
 
+    /* Forma ovalada que refuerza la "ola": un óvalo oscuro rotado que
+       sobresale por debajo del panel (el overflow:hidden del padre lo recorta) */
     .login-hero__wave::before {
         content: "";
         position: absolute;
@@ -361,6 +407,8 @@ img {
         opacity: 0.9;
     }
 
+    /* El logo y el texto "Bienvenido" deben quedar por encima de la
+       "ola" (login-hero__wave), de ahí el z-index */
     .login-hero__brand,
     .login-hero__welcome {
         position: relative;
@@ -370,7 +418,7 @@ img {
     .login-hero__brand {
         margin: 0;
         display: flex;
-        justify-content: center;
+        justify-content: center; /* centra el logo horizontalmente en el panel */
     }
 
     .login-hero__logo {
@@ -378,13 +426,16 @@ img {
         margin: 0 auto;
     }
 
+    /* El propio SVG del logo vertical ya incluye el nombre y el eslogan,
+       así que estos elementos de refuerzo en el HTML no se muestran aquí */
     .login-hero__underline,
     .login-hero__tagline {
         display: none;
     }
 
     .login-hero__welcome {
-        margin: auto 0 0;
+        margin: auto 0 0; /* lo empuja hasta el final del panel (flex-direction: column) */
+        text-align: center; /* centrado horizontal dentro del panel */
         font-family: var(--font-serif);
         font-size: 1.5rem;
         font-weight: 600;
@@ -405,6 +456,8 @@ img {
 
 /* ==========================================================================
    Escritorio amplio (diseño de referencia: MacBook) — más aire, mismo layout
+   Mismo split-screen de arriba; aquí solo se ajustan tamaños y espaciados
+   para pantallas más grandes.
    ========================================================================== */
 
 @media (min-width: 1200px) {

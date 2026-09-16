@@ -2,42 +2,67 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
+        <!-- Ancho = ancho del dispositivo: necesario para que las media queries de login.css respondan al tamaño real de pantalla y no a un viewport de escritorio simulado -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login - Lígneo Carpintería</title>
         <link rel="icon" type="image/svg+xml" href="../logo-ligneo/ligneo-favicon.svg">
+
+        <!-- Tipografías de marca (ver logo-ligneo/LEEME.txt): Spectral para títulos, Archivo para el resto -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Spectral:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="./css/login.css">
     </head>
 
     <body>
+        <!-- Contenedor de toda la pantalla de login. En móvil apila los dos <section>
+             en columna (el hero queda oculto); desde 768px pasa a fila y forma el
+             split-screen: hero a la izquierda, formulario a la derecha. -->
         <main class="login-page">
 
-            <!-- Panel izquierdo: solo visible en tablet / escritorio -->
+            <!-- Panel izquierdo con la imagen de marca. Solo se muestra en tablet/escritorio
+                 (display:none en móvil, ver login.css); es puramente decorativo, por eso
+                 aria-hidden="true": no aporta nada que el lector de pantalla deba anunciar. -->
             <section class="login-hero" aria-hidden="true">
+                <!-- Capa que oscurece la esquina inferior del degradado para simular
+                     la "ola" oscura del diseño original, sin depender de una imagen -->
                 <div class="login-hero__wave"></div>
 
+                <!-- Logotipo vertical (símbolo + nombre + eslogan), centrado y arriba del panel -->
                 <div class="login-hero__brand">
                     <img class="login-hero__logo" src="../logo-ligneo/ligneo-vertical.svg" alt="">
+                    <!-- El propio SVG ya incluye el nombre y el eslogan "Madera con identidad";
+                         estos dos elementos quedan ocultos en pantallas >=768px (login.css) y
+                         solo existirían como refuerzo textual si en algún momento se dejara de
+                         usar el logo vertical. -->
                     <div class="login-hero__underline"></div>
                     <p class="login-hero__tagline">Madera con identidad</p>
                 </div>
 
+                <!-- Texto de bienvenida anclado abajo del panel (margin-top:auto en login.css) -->
                 <p class="login-hero__welcome">Bienvenido</p>
             </section>
 
-            <!-- Panel derecho: formulario, siempre visible -->
+            <!-- Panel derecho: el formulario de acceso. Siempre visible, es el único panel en móvil. -->
             <section class="login-form-panel">
                 <div class="login-form-wrap">
 
-                    <!-- Cabecera con logo horizontal: solo visible en móvil -->
+                    <!-- Logo horizontal, solo visible en móvil (login.css lo oculta desde 768px,
+                         porque en tablet/escritorio ya está el logo vertical del panel hero).
+                         Es un <div> con background-image en vez de <img> porque el SVG original
+                         reserva un margen vacío a la derecha del dibujo (ver comentario en
+                         login.css); con background-position/size se recorta ese espacio y el
+                         logotipo queda realmente centrado. -->
                     <header class="login-brand-mobile">
-                        <img class="login-brand-mobile__logo" src="../logo-ligneo/ligneo-horizontal-inverso.svg" alt="Lígneo Carpintería">
+                        <div class="login-brand-mobile__logo" role="img" aria-label="Lígneo Carpintería"></div>
                     </header>
 
+                    <!-- novalidate: desactivamos la validación nativa del navegador para
+                         controlar nosotros los mensajes de error (ver login.js) -->
                     <form class="login-form" id="login-form" novalidate>
 
+                        <!-- Campo de usuario/email -->
                         <div class="form-field">
                             <label for="username">Nombre de usuario</label>
                             <input
@@ -48,9 +73,11 @@
                                 autocomplete="username"
                                 required
                             >
+                            <!-- Mensaje de error específico de este campo; login.js escribe aquí el texto -->
                             <p class="form-error" id="username-error" role="alert"></p>
                         </div>
 
+                        <!-- Campo de contraseña, con botón para mostrar/ocultar el texto -->
                         <div class="form-field">
                             <label for="password">Contraseña</label>
                             <div class="password-field">
@@ -63,11 +90,16 @@
                                     required
                                     minlength="6"
                                 >
+                                <!-- aria-pressed y aria-label se actualizan por JS según el estado -->
                                 <button type="button" class="toggle-password" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false">
+                                    <!-- Icono "ojo abierto": visible por defecto (contraseña oculta) -->
                                     <svg class="icon-eye" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                                         <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6"/>
                                     </svg>
+                                    <!-- Icono "ojo tachado": oculto por defecto vía CSS (.icon-eye-off),
+                                         login.js alterna la clase "is-visible" del botón para mostrar
+                                         uno u otro (nunca los dos a la vez). -->
                                     <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 7 11 7a13.4 13.4 0 0 1-3.17 3.88M6.5 6.6C3.9 8.3 2 11 2 11s4 7 11 7c1.4 0 2.7-.27 3.9-.74" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -77,16 +109,20 @@
                             <a href="#" class="forgot-password">Recuperar contraseña</a>
                         </div>
 
+                        <!-- Mensaje general del envío (éxito o error de login); login.js le añade
+                             la clase "is-success" o "is-error" según el resultado -->
                         <p class="form-message" id="form-message" role="alert"></p>
 
                         <button type="submit" class="btn btn-primary">Acceder</button>
 
+                        <!-- Separador "o" entre el login normal y el de Google: dos líneas con un círculo en medio -->
                         <div class="divider" role="presentation">
                             <span></span>
                             <i></i>
                             <span></span>
                         </div>
 
+                        <!-- Login social con Google; de momento es un placeholder (ver login.js) -->
                         <button type="button" class="btn btn-google" id="google-login">
                             <svg class="icon-google" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.57 2.7-3.88 2.7-6.62Z"/>
