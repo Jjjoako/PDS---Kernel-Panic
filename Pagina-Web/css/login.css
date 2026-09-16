@@ -1,0 +1,440 @@
+/* ==========================================================================
+   Lígneo Carpintería — Login
+   Paleta e identidad: ver ../logo-ligneo/LEEME.txt
+   ========================================================================== */
+
+:root {
+    --color-ink: #18202f;       /* tinta principal / fondo oscuro */
+    --color-ink-soft: #1f2940;
+    --color-slate: #68748a;     /* gris azulado */
+    --color-mist: #dce1e6;      /* gris claro */
+    --color-cream: #faf7f2;     /* crema */
+    --color-copper: #b8734f;    /* cobre / acento */
+    --color-copper-light: #c98a68;
+
+    --font-serif: "Spectral", "Georgia", serif;
+    --font-sans: "Archivo", "Segoe UI", sans-serif;
+
+    --radius-md: 10px;
+    --radius-lg: 16px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: var(--color-ink);
+    color: var(--color-mist);
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* ==========================================================================
+   Layout general — mobile first (diseño de referencia: iPhone)
+   ========================================================================== */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Panel hero (imagen de marca) — oculto en móvil */
+.login-hero {
+    display: none;
+}
+
+.login-form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-ink);
+    padding: 32px 24px 40px;
+}
+
+.login-form-wrap {
+    width: 100%;
+    max-width: 360px;
+}
+
+/* Logo horizontal — solo en móvil, sustituido por el hero en pantallas grandes */
+.login-brand-mobile {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.login-brand-mobile__logo {
+    height: 68px;
+    width: auto;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Formulario
+   ========================================================================== */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field {
+    margin-bottom: 22px;
+}
+
+.form-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-cream);
+    margin-bottom: 8px;
+}
+
+.form-field input[type="text"],
+.form-field input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    background: rgba(104, 116, 138, 0.55);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.form-field input::placeholder {
+    color: rgba(220, 225, 230, 0.65);
+}
+
+.form-field input:focus {
+    border-color: var(--color-copper);
+    background: rgba(104, 116, 138, 0.7);
+}
+
+.form-field input:user-invalid {
+    border-color: #c96a5a;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    padding-right: 44px;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-mist);
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.toggle-password:hover,
+.toggle-password:focus-visible {
+    color: var(--color-cream);
+}
+
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Solo un icono visible a la vez: el ojo tachado se muestra
+   únicamente cuando el botón tiene la clase "is-visible" */
+.toggle-password .icon-eye-off {
+    display: none;
+}
+
+.toggle-password.is-visible .icon-eye {
+    display: none;
+}
+
+.toggle-password.is-visible .icon-eye-off {
+    display: block;
+}
+
+.form-error {
+    margin: 6px 2px 0;
+    font-size: 0.78rem;
+    color: #e28a76;
+    min-height: 1em;
+}
+
+.form-error:empty {
+    display: none;
+}
+
+.form-message {
+    margin: -6px 0 16px;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.form-message:empty {
+    display: none;
+}
+
+.form-message.is-success {
+    color: #7fbf9e;
+}
+
+.form-message.is-error {
+    color: #e28a76;
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 8px;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--color-copper-light);
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Botones */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: var(--radius-md);
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.05s ease;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-primary {
+    background: var(--color-copper);
+    color: var(--color-cream);
+    margin-top: 6px;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.08);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-google {
+    background: rgba(104, 116, 138, 0.55);
+    color: var(--color-cream);
+}
+
+.btn-google:hover {
+    background: rgba(104, 116, 138, 0.7);
+}
+
+.icon-google {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* Divider con círculo central */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 28px 0;
+}
+
+.divider span {
+    flex: 1;
+    height: 1px;
+    background: rgba(220, 225, 230, 0.35);
+}
+
+.divider i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(220, 225, 230, 0.6);
+    flex-shrink: 0;
+}
+
+.signup-text {
+    margin: 28px 0 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-mist);
+}
+
+.signup-text a {
+    color: var(--color-copper-light);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   Tablet / escritorio (diseño de referencia: iPad y MacBook) — split screen
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .login-page {
+        flex-direction: row;
+    }
+
+    /* Oculta la cabecera de marca de móvil, el hero la sustituye */
+    .login-brand-mobile {
+        display: none;
+    }
+
+    .login-hero {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow: hidden;
+        flex: 0 0 44%;
+        min-height: 100%;
+        padding: 40px;
+        background:
+            radial-gradient(120% 90% at 15% 10%, var(--color-cream) 0%, #e7c9a6 38%, var(--color-copper) 72%, #6e4a35 100%);
+    }
+
+    .login-hero__wave {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(75% 60% at 20% 100%, rgba(24, 32, 47, 0.92) 0%, rgba(24, 32, 47, 0.55) 45%, rgba(24, 32, 47, 0) 72%),
+            radial-gradient(65% 55% at 100% 35%, rgba(24, 32, 47, 0.35) 0%, rgba(24, 32, 47, 0) 70%);
+        mix-blend-mode: multiply;
+    }
+
+    .login-hero__wave::before {
+        content: "";
+        position: absolute;
+        width: 160%;
+        height: 70%;
+        left: -45%;
+        bottom: -30%;
+        background: radial-gradient(closest-side, var(--color-ink) 62%, transparent 100%);
+        border-radius: 45%;
+        transform: rotate(-8deg);
+        opacity: 0.9;
+    }
+
+    .login-hero__brand,
+    .login-hero__welcome {
+        position: relative;
+        z-index: 1;
+    }
+
+    .login-hero__brand {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .login-hero__logo {
+        width: min(300px, 82%);
+        margin: 0 auto;
+    }
+
+    .login-hero__underline,
+    .login-hero__tagline {
+        display: none;
+    }
+
+    .login-hero__welcome {
+        margin: auto 0 0;
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--color-cream);
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .login-form-panel {
+        flex: 1;
+        padding: 40px;
+        justify-content: center;
+    }
+
+    .login-form-wrap {
+        max-width: 320px;
+    }
+}
+
+/* ==========================================================================
+   Escritorio amplio (diseño de referencia: MacBook) — más aire, mismo layout
+   ========================================================================== */
+
+@media (min-width: 1200px) {
+    .login-hero {
+        flex: 0 0 48%;
+        padding: 64px;
+    }
+
+    .login-hero__logo {
+        width: 360px;
+    }
+
+    .login-hero__welcome {
+        font-size: 1.9rem;
+    }
+
+    .login-form-panel {
+        padding: 64px;
+    }
+
+    .login-form-wrap {
+        max-width: 360px;
+    }
+
+    .form-field label {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 14px 16px;
+    }
+}
